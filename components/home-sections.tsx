@@ -51,10 +51,10 @@ export function HomeHero() {
             </p>
             <div className='home-ctas'>
                <Link href='/games' className='btn xl pulse'>
-                  ▶ &nbsp;EXPLORAR JUEGOS
+                  ▶ EXPLORAR JUEGOS
                </Link>
                <Link href='/auth' className='btn xl magenta'>
-                  ✦ &nbsp;CREAR CUENTA
+                  ✦ CREAR CUENTA
                </Link>
             </div>
             <div className='hero-scroll' aria-hidden='true'>

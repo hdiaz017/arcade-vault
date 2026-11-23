@@ -1,6 +1,6 @@
 # SPEC 02 — Pantalla Home (landing) de Arcade Vault
 
-> **Status:** approved
+> **Status:** implemented
 > **Depends on:** SPEC 01
 > **Date:** 2026-11-22
 > **Objective:** Agregar la pantalla Home (landing) en `/` portada de `references/templates/home-about/`, mover la Biblioteca a `/games` y sumar "Inicio" y "Acerca de" al nav.
@@ -113,14 +113,14 @@ Antes del paso 1: leer en `node_modules/next/dist/docs/01-app` las guías de `ne
 
 ## Acceptance criteria
 
-- [ ] `npm run build` termina sin errores y `npm run lint` sin errores.
-- [ ] `/` muestra la Home y `/games` muestra la Biblioteca con sus 8 tarjetas, búsqueda y chips funcionando igual que antes.
-- [ ] Ninguna pantalla muestra la Biblioteca en `/`: el hero "ARCADE VAULT" del SPEC 01 solo aparece en `/games`.
-- [ ] El hero de la Home muestra el título en tres líneas ("EL ARCADE" / "CLÁSICO ESTÁ" / "DE VUELTA"), el texto "▸ INSERTA UNA MONEDA\_" y las 8 siluetas flotantes.
-- [ ] "EXPLORAR JUEGOS", "VER TODOS LOS JUEGOS" e "INSERTAR MONEDA" navegan a `/games`.
-- [ ] "CREAR CUENTA" y "EMPEZAR GRATIS" navegan a `/auth` (sin parámetros).
-- [ ] "VER SALÓN →" navega a `/salon`.
-- [ ] "Juegos disponibles ahora" muestra exactamente 6 mini tarjetas (los 6 primeros de `GAMES`) y cada una navega a `/juegos/[id]`.
+- [x ] `npm run build` termina sin errores y `npm run lint` sin errores.
+- [ x] `/` muestra la Home y `/games` muestra la Biblioteca con sus 8 tarjetas, búsqueda y chips funcionando igual que antes.
+- [x ] Ninguna pantalla muestra la Biblioteca en `/`: el hero "ARCADE VAULT" del SPEC 01 solo aparece en `/games`.
+- [ x] El hero de la Home muestra el título en tres líneas ("EL ARCADE" / "CLÁSICO ESTÁ" / "DE VUELTA"), el texto "▸ INSERTA UNA MONEDA\_" y las 8 siluetas flotantes.
+- [ x] "EXPLORAR JUEGOS", "VER TODOS LOS JUEGOS" e "INSERTAR MONEDA" navegan a `/games`.
+- [x] "CREAR CUENTA" y "EMPEZAR GRATIS" navegan a `/auth` (sin parámetros).
+- [x ] "VER SALÓN →" navega a `/salon`.
+- [x ] "Juegos disponibles ahora" muestra exactamente 6 mini tarjetas (los 6 primeros de `GAMES`) y cada una navega a `/juegos/[id]`.
 - [ ] "¿Por qué Arcade Vault?" muestra 4 tarjetas con ícono, título y descripción.
 - [ ] Stats muestra 3 bloques: "12+ JUEGOS", "MILES DE PARTIDAS", "GLOBAL RANKING".
 - [ ] "Actividad en vivo" muestra 7 filas en "ÚLTIMAS PUNTUACIONES" y 5 en "TOP JUGADORES · HOY", con las filas 1, 2 y 3 destacadas.

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   ActivitySection,
   FinalCta,
@@ -7,6 +8,11 @@ import {
   StatsSection,
   WhySection,
 } from "@/components/home-sections";
+
+export const metadata: Metadata = {
+  description:
+    "Arcade Vault: juega gratis los mejores arcades clásicos en tu navegador, compite por el mejor puntaje y sube en el ranking global.",
+};
 
 export default function Home() {
   return (

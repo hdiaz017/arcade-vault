@@ -1,15 +1,23 @@
-import LibraryClient from "@/components/library-client";
+import {
+  ActivitySection,
+  FinalCta,
+  GamesPreview,
+  HomeHero,
+  PricingSection,
+  StatsSection,
+  WhySection,
+} from "@/components/home-sections";
 
 export default function Home() {
   return (
-    <div className="fade-in">
-      <section className="av-hero">
-        <h1 className="flicker">ARCADE VAULT</h1>
-        <div className="sub">
-          INSERTA UNA MONEDA PARA JUGAR <span className="blink">_</span>
-        </div>
-      </section>
-      <LibraryClient />
+    <div className="home fade-in">
+      <HomeHero />
+      <WhySection />
+      <GamesPreview />
+      <StatsSection />
+      <ActivitySection />
+      <PricingSection />
+      <FinalCta />
     </div>
   );
 }

@@ -26,7 +26,10 @@ const courierPrime = Courier_Prime({
 });
 
 export const metadata: Metadata = {
-  title: "Arcade Vault",
+  title: {
+    default: "Arcade Vault",
+    template: "%s · Arcade Vault",
+  },
   description: "Juega, compite y llega al top del Salón de la Fama.",
 };
 

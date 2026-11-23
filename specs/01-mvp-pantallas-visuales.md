@@ -117,28 +117,28 @@ Antes del paso 1: leer en `node_modules/next/dist/docs/01-app` las guías de rut
 
 ## Acceptance criteria
 
-- [ ] `npm run build` termina sin errores y `npm run lint` sin errores.
-- [ ] Existen las rutas `/`, `/juegos/[id]`, `/juegos/[id]/jugar`, `/auth` y `/salon`, y todas cargan sin errores ni warnings de hydration en la consola.
-- [ ] `/juegos/inexistente` y `/juegos/inexistente/jugar` devuelven 404.
-- [ ] La Biblioteca muestra 8 tarjetas; el chip "TODOS" las muestra todas y cada otro chip filtra por `cat`.
-- [ ] Buscar un texto sin coincidencias muestra "NO HAY RESULTADOS".
-- [ ] Hacer clic en una tarjeta o en su botón JUGAR navega a `/juegos/[id]`.
-- [ ] El Detalle muestra título, descripción, 3 métricas y 10 filas de leaderboard, con top 1, 2 y 3 destacados.
-- [ ] "JUGAR AHORA" navega a `/juegos/[id]/jugar`; "VOLVER AL VAULT" navega a `/`.
-- [ ] En el Reproductor, el puntaje aumenta mientras no hay pausa; "PAUSA" lo detiene y muestra "EN PAUSA"; "REANUDAR" lo retoma.
-- [ ] "FIN" abre el modal "FIN DEL JUEGO" con el puntaje final; "GUARDAR PUNTUACIÓN" muestra "PUNTUACIÓN GUARDADA\_" y no escribe en `localStorage`.
-- [ ] "JUGAR DE NUEVO" reinicia puntaje, vidas y nivel; "SALIR" navega a `/juegos/[id]`.
-- [ ] En Auth, la pestaña "CREAR CUENTA" muestra el campo de correo y "INICIAR SESIÓN" lo oculta.
-- [ ] Enviar el formulario con usuario `px_kai` guarda `{"name":"PX_KAI"}` en `localStorage["av_user"]`, redirige a `/` y la nav muestra `PX_KAI`.
-- [ ] Con el campo usuario vacío, el nombre resultante es `PLAYER1`.
-- [ ] "JUGAR COMO INVITADO" redirige a `/` sin crear `av_user`.
-- [ ] Cerrar sesión elimina `av_user` y la nav vuelve a mostrar "Iniciar Sesión".
-- [ ] Recargar la página con sesión activa mantiene al usuario en la nav.
-- [ ] El Salón muestra una pestaña por cada juego (8), un podio con 3 posiciones y una tabla de 12 filas.
-- [ ] La fila "TU MEJOR MARCA" aparece solo con sesión activa.
-- [ ] Con ancho ≤ 768 px aparece el botón hamburguesa y el panel móvil abre y cierra; el enlace activo se marca en nav y en el panel.
-- [ ] Los puntajes del Detalle y del Salón son idénticos entre recargas (determinista).
-- [ ] No existe lógica de juego real: ningún `<canvas>`, ni manejo de teclado del juego, ni colisiones.
+- [ x] `npm run build` termina sin errores y `npm run lint` sin errores.
+- [x ] Existen las rutas `/`, `/juegos/[id]`, `/juegos/[id]/jugar`, `/auth` y `/salon`, y todas cargan sin errores ni warnings de hydration en la consola.
+- [x ] `/juegos/inexistente` y `/juegos/inexistente/jugar` devuelven 404.
+- [ x] La Biblioteca muestra 8 tarjetas; el chip "TODOS" las muestra todas y cada otro chip filtra por `cat`.
+- [ x] Buscar un texto sin coincidencias muestra "NO HAY RESULTADOS".
+- [x ] Hacer clic en una tarjeta o en su botón JUGAR navega a `/juegos/[id]`.
+- [x ] El Detalle muestra título, descripción, 3 métricas y 10 filas de leaderboard, con top 1, 2 y 3 destacados.
+- [x ] "JUGAR AHORA" navega a `/juegos/[id]/jugar`; "VOLVER AL VAULT" navega a `/`.
+- [ x] En el Reproductor, el puntaje aumenta mientras no hay pausa; "PAUSA" lo detiene y muestra "EN PAUSA"; "REANUDAR" lo retoma.
+- [x ] "FIN" abre el modal "FIN DEL JUEGO" con el puntaje final; "GUARDAR PUNTUACIÓN" muestra "PUNTUACIÓN GUARDADA\_" y no escribe en `localStorage`.
+- [ x] "JUGAR DE NUEVO" reinicia puntaje, vidas y nivel; "SALIR" navega a `/juegos/[id]`.
+- [ x] En Auth, la pestaña "CREAR CUENTA" muestra el campo de correo y "INICIAR SESIÓN" lo oculta.
+- [x ] Enviar el formulario con usuario `px_kai` guarda `{"name":"PX_KAI"}` en `localStorage["av_user"]`, redirige a `/` y la nav muestra `PX_KAI`.
+- [ x] Con el campo usuario vacío, el nombre resultante es `PLAYER1`.
+- [x ] "JUGAR COMO INVITADO" redirige a `/` sin crear `av_user`.
+- [x ] Cerrar sesión elimina `av_user` y la nav vuelve a mostrar "Iniciar Sesión".
+- [x ] Recargar la página con sesión activa mantiene al usuario en la nav.
+- [ x] El Salón muestra una pestaña por cada juego (8), un podio con 3 posiciones y una tabla de 12 filas.
+- [ x] La fila "TU MEJOR MARCA" aparece solo con sesión activa.
+- [ x] Con ancho ≤ 768 px aparece el botón hamburguesa y el panel móvil abre y cierra; el enlace activo se marca en nav y en el panel.
+- [x ] Los puntajes del Detalle y del Salón son idénticos entre recargas (determinista).
+- [x ] No existe lógica de juego real: ningún `<canvas>`, ni manejo de teclado del juego, ni colisiones.
 
 ---
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { useSession } from "@/lib/session";
+import { logout, useSession } from "@/lib/session";
 
 export default function Nav() {
   const [open, setOpen] = useState(false);
@@ -38,7 +38,11 @@ export default function Nav() {
           <span>CRÉDITOS · 03</span>
         </div>
         {user ? (
-          <button type="button" className="btn ghost auth-btn">
+          <button
+            type="button"
+            className="btn ghost auth-btn"
+            onClick={logout}
+          >
             {user.name} ▾
           </button>
         ) : (

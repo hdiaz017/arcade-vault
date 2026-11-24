@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import ContactForm from "@/components/contact-form";
 import HighlightIcon, { type HighlightKind } from "@/components/highlight-icon";
 import Reveal from "@/components/reveal";
+
+export const metadata: Metadata = {
+  title: "Acerca de",
+  description:
+    "Conoce Arcade Vault, la plataforma que preserva los arcades clásicos en HTML, y escríbenos tus sugerencias o ideas de juegos.",
+};
 
 const HIGHLIGHTS: { icon: HighlightKind; text: string; color: string }[] = [
   { icon: "HEART", text: "HECHO CON ❤️ PARA JUGADORES", color: "magenta" },

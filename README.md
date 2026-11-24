@@ -17,7 +17,7 @@ npx skills@latest add Klerith/fernando-skills
 
 ## Commands
 
-- `npm run dev` — dev server (http://localhost:3000)
-- `npm run build` / `npm start` — production build / serve
-- `npm run lint` — ESLint (flat config, `eslint.config.mjs`)
+- `pnpm run dev` — dev server (http://localhost:3000)
+- `pnpm run build` / `pnpm start` — production build / serve
+- `pnpm run lint` — ESLint (flat config, `eslint.config.mjs`)
 - No test runner is configured.

@@ -102,22 +102,22 @@ Un `id` inexistente en `/juegos/[id]` y `/juegos/[id]/jugar` llama a `notFound()
 
 Antes del paso 1: leer en `node_modules/next/dist/docs/01-app` las guías de rutas dinámicas, `cacheComponents`, `generateStaticParams`, `notFound` y `next/link`, tal como exige `AGENTS.md`.
 
-1. **Datos y tipos.** Crear `lib/types.ts` y `lib/data.ts` portando `data.jsx`. Verificación: `npm run lint` y `npx tsc --noEmit` pasan.
+1. **Datos y tipos.** Crear `lib/types.ts` y `lib/data.ts` portando `data.jsx`. Verificación: `pnpm run lint` y `pnpm exec tsc --noEmit` pasan.
 2. **Sesión mock.** Crear `lib/session.ts` (hook `useSession` con `useSyncExternalStore`, `login(name)`, `logout()`) sobre `localStorage["av_user"]`. Verificación: `tsc` pasa.
-3. **Nav y footer.** Crear `components/nav.tsx` (cliente, con `next/link`, estado activo por `usePathname`, menú móvil) y `components/footer.tsx`. Montarlos en `app/layout.tsx` sobre un `<main className="av-main">`. Reemplazar el contenido de `app/page.tsx` por un stub. Verificación: `npm run dev` muestra nav y footer; el menú móvil abre y cierra.
+3. **Nav y footer.** Crear `components/nav.tsx` (cliente, con `next/link`, estado activo por `usePathname`, menú móvil) y `components/footer.tsx`. Montarlos en `app/layout.tsx` sobre un `<main className="av-main">`. Reemplazar el contenido de `app/page.tsx` por un stub. Verificación: `pnpm run dev` muestra nav y footer; el menú móvil abre y cierra.
 4. **Biblioteca.** Crear `components/game-card.tsx` (con efecto tilt) y `components/library-client.tsx` (búsqueda + chips). `app/page.tsx` renderiza hero + `LibraryClient`. Verificación: 8 tarjetas; filtrar por "PUZZLE" deja 1; buscar "xyz" muestra "NO HAY RESULTADOS".
 5. **Detalle.** Crear `app/juegos/[id]/page.tsx` con `generateStaticParams`, `notFound()` y leaderboard de 10 filas. "JUGAR AHORA" enlaza a `/juegos/[id]/jugar`. Verificación: `/juegos/caida` renderiza; `/juegos/nope` da 404.
 6. **Auth.** Crear `app/auth/page.tsx` y `components/auth-form.tsx` (tabs, campo de correo solo en "CREAR CUENTA", botón invitado, botones sociales inertes). Submit llama `login` y navega a `/` con `router.push`. Verificación: tras entrar, la nav muestra el nombre en mayúsculas.
 7. **Cierre de sesión.** Hacer que el botón de usuario de la nav ejecute `logout`. Verificación: tras salir, la nav vuelve a "Iniciar Sesión" y `localStorage["av_user"]` no existe.
 8. **Reproductor.** Crear `app/juegos/[id]/jugar/page.tsx` y `components/player-client.tsx`: HUD, arena de demostración, pausa, FIN, overlay "FIN DEL JUEGO" con input de iniciales y toast de guardado (sin persistir), "JUGAR DE NUEVO" y "VOLVER AL VAULT". Dividir en subcomponentes si supera ~50 líneas por pieza. Verificación: el puntaje sube cada ~220 ms; pausa lo detiene; FIN abre el modal.
 9. **Salón de la Fama.** Crear `app/salon/page.tsx` y `components/hall-client.tsx`: pestañas por juego, podio, tabla y fila "TU MEJOR MARCA" solo con sesión. Verificación: cambiar de pestaña cambia podio y tabla; sin sesión no aparece la fila propia.
-10.   **Metadata y limpieza.** Añadir `metadata` por ruta (título por pantalla) y borrar assets del scaffold que queden sin uso (`public/next.svg`, etc.). Verificación: `npm run build` y `npm run lint` pasan.
+10.   **Metadata y limpieza.** Añadir `metadata` por ruta (título por pantalla) y borrar assets del scaffold que queden sin uso (`public/next.svg`, etc.). Verificación: `pnpm run build` y `pnpm run lint` pasan.
 
 ---
 
 ## Acceptance criteria
 
-- [ x] `npm run build` termina sin errores y `npm run lint` sin errores.
+- [ x] `pnpm run build` termina sin errores y `pnpm run lint` sin errores.
 - [x ] Existen las rutas `/`, `/juegos/[id]`, `/juegos/[id]/jugar`, `/auth` y `/salon`, y todas cargan sin errores ni warnings de hydration en la consola.
 - [x ] `/juegos/inexistente` y `/juegos/inexistente/jugar` devuelven 404.
 - [ x] La Biblioteca muestra 8 tarjetas; el chip "TODOS" las muestra todas y cada otro chip filtra por `cat`.

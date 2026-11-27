@@ -102,18 +102,18 @@ El resto de rutas del SPEC 01 no cambia.
 Antes del paso 1: leer en `node_modules/next/dist/docs/01-app` las guías de `next/link`, `metadata` y Client Components con `cacheComponents`, tal como exige `AGENTS.md`. Aplicar `/frontend-design` según `CLAUDE.md`, con fidelidad al template por encima de reinterpretar.
 
 1. **Mover la Biblioteca a `/games`.** Crear `app/games/page.tsx` con el contenido actual de `app/page.tsx` (hero `av-hero` + `LibraryClient`) y `metadata` con título "Biblioteca". Cambiar a `/games` los enlaces que significan "Biblioteca": `app/juegos/[id]/page.tsx:74`, `components/hall-client.tsx:120` y `components/player-client.tsx:136`. Dejar `app/page.tsx` intacto por ahora. Verificación: `/games` muestra las 8 tarjetas; "VOLVER AL VAULT" y "VOLVER A LA BIBLIOTECA" llevan a `/games`.
-2. **Estilos.** Copiar de `references/templates/home-about/styles.css` a `app/globals.css` los bloques `HOME PAGE` (líneas ~930–1070, incluye `.reveal` y keyframes `bounce` y `float`), `ACTIVITY` (~1621–1671) y `PRICING` (~1672–1726). Buscar con `grep` si faltan clases usadas por `home.jsx` (p. ej. `.lb-link`, `.ticker`) y copiarlas también. No copiar el bloque `ABOUT PAGE` ni `Theme variants`. Verificación: `npm run build` pasa y la Biblioteca se ve igual que antes.
-3. **Datos mock.** Crear `lib/home-data.ts` con los tipos y constantes del modelo. Verificación: `npx tsc --noEmit` y `npm run lint` pasan.
+2. **Estilos.** Copiar de `references/templates/home-about/styles.css` a `app/globals.css` los bloques `HOME PAGE` (líneas ~930–1070, incluye `.reveal` y keyframes `bounce` y `float`), `ACTIVITY` (~1621–1671) y `PRICING` (~1672–1726). Buscar con `grep` si faltan clases usadas por `home.jsx` (p. ej. `.lb-link`, `.ticker`) y copiarlas también. No copiar el bloque `ABOUT PAGE` ni `Theme variants`. Verificación: `pnpm run build` pasa y la Biblioteca se ve igual que antes.
+3. **Datos mock.** Crear `lib/home-data.ts` con los tipos y constantes del modelo. Verificación: `pnpm exec tsc --noEmit` y `pnpm run lint` pasan.
 4. **Componentes de presentación.** Crear `components/home-silhouettes.tsx` (8 SVG, servidor), `components/feature-icon.tsx` (4 íconos, servidor), `components/mini-card.tsx` (enlace `next/link` a `/juegos/[id]`, usa `cover-bg` + `game.cover`) y `components/reveal.tsx` (cliente: renderiza el elemento con clase `reveal`, agrega `in` con `IntersectionObserver` umbral 0.12 y deja de observar al entrar). Verificación: `tsc` y `lint` pasan.
 5. **Página Home.** Reemplazar `app/page.tsx` con la landing: siete bloques en el orden del template, `className="home fade-in"` en el contenedor. Los CTAs son `Link` con las clases `btn xl …` del template: "EXPLORAR JUEGOS", "VER TODOS LOS JUEGOS" e "INSERTAR MONEDA" a `/games`; "CREAR CUENTA" y "EMPEZAR GRATIS" a `/auth`; "VER SALÓN →" a `/salon`. Dividir en subcomponentes si una pieza supera ~50 líneas. Verificación: `/` renderiza todas las secciones y sus enlaces navegan.
 6. **Nav.** En `components/nav.tsx` agregar "Inicio" (`/`) y "Acerca de" (`/about`) en escritorio y panel móvil, con el orden del template: Inicio, Biblioteca, Salón de la Fama, Acerca de. Cambiar "Biblioteca" a `/games`. Activo: Inicio solo si `pathname === "/"`; Biblioteca si empieza con `/games` o `/juegos`; Acerca de si empieza con `/about`. El logo sigue yendo a `/`. Verificación: el activo cambia al navegar y el panel móvil muestra los cuatro enlaces.
-7. **Metadata y cierre.** Añadir `metadata` a la Home (descripción para SEO; el título usa el `default` del layout). Verificación: `npm run build` y `npm run lint` pasan.
+7. **Metadata y cierre.** Añadir `metadata` a la Home (descripción para SEO; el título usa el `default` del layout). Verificación: `pnpm run build` y `pnpm run lint` pasan.
 
 ---
 
 ## Acceptance criteria
 
-- [x ] `npm run build` termina sin errores y `npm run lint` sin errores.
+- [x ] `pnpm run build` termina sin errores y `pnpm run lint` sin errores.
 - [ x] `/` muestra la Home y `/games` muestra la Biblioteca con sus 8 tarjetas, búsqueda y chips funcionando igual que antes.
 - [x ] Ninguna pantalla muestra la Biblioteca en `/`: el hero "ARCADE VAULT" del SPEC 01 solo aparece en `/games`.
 - [ x] El hero de la Home muestra el título en tres líneas ("EL ARCADE" / "CLÁSICO ESTÁ" / "DE VUELTA"), el texto "▸ INSERTA UNA MONEDA\_" y las 8 siluetas flotantes.

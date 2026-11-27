@@ -20,4 +20,5 @@ npx skills@latest add Klerith/fernando-skills
 - `pnpm run dev` — dev server (http://localhost:3000)
 - `pnpm run build` / `pnpm start` — production build / serve
 - `pnpm run lint` — ESLint (flat config, `eslint.config.mjs`)
+- `pnpm run check:supabase` — checks the Supabase URL and publishable key from `.env` (see `.env.example`)
 - No test runner is configured.

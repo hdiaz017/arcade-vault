@@ -14,8 +14,12 @@ async function check() {
   ].filter(Boolean);
 
   if (missing.length > 0) {
+    const subject =
+      missing.length > 1
+        ? "Faltan las variables de entorno"
+        : "Falta la variable de entorno";
     throw new Error(
-      `Falta la variable de entorno ${missing.join(" y ")}. Defínela en .env (ver .env.example).`,
+      `${subject} ${missing.join(" y ")}. Revisa .env (ver .env.example).`,
     );
   }
 
@@ -50,6 +54,7 @@ try {
   const status = await check();
   console.log(`OK: conexión con Supabase verificada (HTTP ${status}).`);
 } catch (error) {
-  console.error(`ERROR: ${error.message}`);
-  process.exitCode = 1;
+  // Salida explícita: tras un timeout, la conexión pendiente mantendría vivo el
+  // proceso más allá del límite.
+  process.stderr.write(`ERROR: ${error.message}\n`, () => process.exit(1));
 }

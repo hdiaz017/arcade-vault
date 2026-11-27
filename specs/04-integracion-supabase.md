@@ -1,6 +1,6 @@
 # SPEC 04 — Integración base de Supabase
 
-> **Status:** approved
+> **Status:** implemented
 > **Depends on:** SPEC 03
 > **Date:** 2026-11-27
 > **Objective:** Integrar Supabase en la app Next.js (dependencias, variables de entorno, clientes de navegador y servidor, y un script que compruebe la conexión) sin cambiar ninguna funcionalidad visible.

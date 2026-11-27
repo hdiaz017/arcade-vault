@@ -1,6 +1,6 @@
 # SPEC 03 — Pantalla About y envío real de correos de contacto
 
-> **Status:** approved
+> **Status:** implemented
 > **Depends on:** SPEC 01, SPEC 02
 > **Date:** 2026-11-23
 > **Objective:** Agregar la pantalla About en `/about` portada de `references/templates/home-about/about.jsx` y hacer que su formulario de contacto envíe un correo real con Resend mediante una Server Action.

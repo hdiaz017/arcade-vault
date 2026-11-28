@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import AsteroidsCanvas from "@/components/asteroids-canvas";
 import CrtFrame, { CrtPause } from "@/components/crt-frame";
 import GameOverModal from "@/components/game-over-modal";
@@ -15,6 +15,19 @@ const INITIAL_SNAPSHOT: AsteroidsSnapshot = { score: 0, lives: START_LIVES, leve
 
 type Props = { gameId: string; title: string };
 
+const TOUCH_QUERY = "(hover: none) and (pointer: coarse)";
+
+function subscribeTouch(onChange: () => void) {
+  const query = window.matchMedia(TOUCH_QUERY);
+  query.addEventListener("change", onChange);
+  return () => query.removeEventListener("change", onChange);
+}
+
+const isTouchDevice = () => window.matchMedia(TOUCH_QUERY).matches;
+
+// En el servidor no se sabe: hasta saberlo no se crea ninguna partida.
+const unknownDevice = () => null;
+
 // Un botón con el foco se volvería a activar al disparar con Espacio.
 function releaseFocus() {
   if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
@@ -22,6 +35,12 @@ function releaseFocus() {
 
 export default function AsteroidsPlayer({ gameId, title }: Props) {
   const user = useSession();
+  const touch = useSyncExternalStore<boolean | null>(
+    subscribeTouch,
+    isTouchDevice,
+    unknownDevice,
+  );
+  const playable = touch === false;
   const gameRef = useRef<AsteroidsGame | null>(null);
   const [snapshot, setSnapshot] = useState(INITIAL_SNAPSHOT);
   const [paused, setPaused] = useState(false);
@@ -36,9 +55,9 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
     gameRef.current?.setPaused(paused);
   }, [paused]);
 
-  // Tecla P y pausa automática; con la partida terminada no hacen nada.
+  // Tecla P y pausa automática; sin partida en curso no hacen nada.
   useEffect(() => {
-    if (over) return;
+    if (!playable || over) return;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.code !== "KeyP" || event.repeat || isTextField(event.target)) return;
       if (event.ctrlKey || event.metaKey || event.altKey) return; // atajos del navegador
@@ -56,11 +75,11 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
       window.removeEventListener("blur", onBlur);
       document.removeEventListener("visibilitychange", onVisibilityChange);
     };
-  }, [over]);
+  }, [playable, over]);
 
   const togglePause = () => {
     releaseFocus();
-    if (!over) setPaused((p) => !p);
+    if (playable && !over) setPaused((p) => !p);
   };
 
   // El motor responde con `onGameOver`, igual que al perder la última vida.
@@ -74,11 +93,16 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
     setPaused(false);
   };
 
-  const restart = () => {
-    gameRef.current?.restart();
+  // Al volver a la ruta React conserva el estado: hay que limpiarlo.
+  const resetMatchState = () => {
     setPaused(false);
     setFinalScore(null);
     setSaved(false);
+  };
+
+  const restart = () => {
+    gameRef.current?.restart();
+    resetMatchState();
   };
 
   return (
@@ -94,11 +118,21 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
         onEnd={end}
       />
       <CrtFrame title={title}>
-        <AsteroidsCanvas
-          gameRef={gameRef}
-          onChange={setSnapshot}
-          onGameOver={handleGameOver}
-        />
+        {playable && (
+          <AsteroidsCanvas
+            gameRef={gameRef}
+            onCreate={resetMatchState}
+            onChange={setSnapshot}
+            onGameOver={handleGameOver}
+          />
+        )}
+        {touch && (
+          <div className="crt-content">
+            <div className="pixel neon-yellow" style={{ fontSize: 16, lineHeight: 1.8, padding: 24 }}>
+              ESTE JUEGO NECESITA TECLADO
+            </div>
+          </div>
+        )}
         {paused && !over && <CrtPause hint="PULSA REANUDAR O LA TECLA P" />}
       </CrtFrame>
       {finalScore !== null && (

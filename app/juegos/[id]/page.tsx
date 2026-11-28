@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { GAMES, getGame, seededScores } from "@/lib/data";
+import { Suspense } from "react";
+import Leaderboard, { LeaderboardFallback } from "@/components/leaderboard";
+import { GAMES, getGame } from "@/lib/data";
 
 // Los ids del catálogo se prerenderizan; un id desconocido se resuelve en request y debe
 // responder 404 real, lo que exige leer `params` fuera de <Suspense>.
@@ -25,8 +27,6 @@ export default async function GameDetailPage({
   const { id } = await params;
   const game = getGame(id);
   if (!game) notFound();
-
-  const scores = seededScores(id.length * 17 + 3, 10);
 
   return (
     <div className="av-detail fade-in">
@@ -79,26 +79,9 @@ export default async function GameDetailPage({
       </div>
 
       <aside>
-        <div className="leaderboard">
-          <h3>MEJORES PUNTUACIONES</h3>
-          {scores.map((r, i) => (
-            <div
-              key={r.rank}
-              className={
-                "lb-row" + (i === 0 ? " top1" : i === 1 ? " top2" : i === 2 ? " top3" : "")
-              }
-            >
-              <div className="rk">#{String(r.rank).padStart(2, "0")}</div>
-              <div className="pl">
-                {r.name}
-                <div style={{ fontSize: 10, color: "var(--ink-faint)", letterSpacing: "0.1em" }}>
-                  {r.date}
-                </div>
-              </div>
-              <div className="sc">{r.score.toLocaleString("es-ES")}</div>
-            </div>
-          ))}
-        </div>
+        <Suspense fallback={<LeaderboardFallback />}>
+          <Leaderboard gameId={game.id} />
+        </Suspense>
       </aside>
     </div>
   );

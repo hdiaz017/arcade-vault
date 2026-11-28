@@ -1,73 +1,72 @@
 "use client";
 
-import Link from "next/link";
-import { useMemo, useState } from "react";
-import { GAMES, seededScores } from "@/lib/data";
-import { useSession } from "@/lib/session";
+import { useState } from "react";
 import type { ScoreRow } from "@/lib/types";
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 const pad = (n: number) => String(n).padStart(2, "0");
 
+const EMPTY = "---";
+
+// Orden en pantalla: plata, oro y bronce.
+const PODIUM = [
+  { place: 2, tone: "silver" },
+  { place: 1, tone: "gold" },
+  { place: 3, tone: "bronze" },
+];
+
+export type HallBoard = { id: string; title: string; rows: ScoreRow[] };
+
 function Podium({ rows }: { rows: ScoreRow[] }) {
   return (
     <div className="podium">
-      <div className="podium-slot silver">
-        <div className="rank-num">02</div>
-        <div className="name">{rows[1].name}</div>
-        <div className="score">{fmt(rows[1].score)}</div>
-        <div className="date">{rows[1].date}</div>
-      </div>
-      <div className="podium-slot gold">
-        <div
-          className="pixel"
-          style={{ fontSize: 9, color: "var(--gold)", letterSpacing: "0.18em" }}
-        >
-          CAMPEÓN
-        </div>
-        <div className="rank-num" style={{ fontSize: 36, marginTop: 4 }}>01</div>
-        <div className="name">{rows[0].name}</div>
-        <div className="score" style={{ fontSize: 20 }}>{fmt(rows[0].score)}</div>
-        <div className="date">{rows[0].date}</div>
-      </div>
-      <div className="podium-slot bronze">
-        <div className="rank-num">03</div>
-        <div className="name">{rows[2].name}</div>
-        <div className="score">{fmt(rows[2].score)}</div>
-        <div className="date">{rows[2].date}</div>
-      </div>
+      {PODIUM.map(({ place, tone }) => {
+        const row = rows[place - 1];
+        const gold = place === 1;
+        return (
+          <div key={place} className={"podium-slot " + tone}>
+            {gold && (
+              <div
+                className="pixel"
+                style={{ fontSize: 9, color: "var(--gold)", letterSpacing: "0.18em" }}
+              >
+                CAMPEÓN
+              </div>
+            )}
+            <div
+              className="rank-num"
+              style={gold ? { fontSize: 36, marginTop: 4 } : undefined}
+            >
+              {pad(place)}
+            </div>
+            <div className="name">{row?.name ?? EMPTY}</div>
+            <div className="score" style={gold ? { fontSize: 20 } : undefined}>
+              {row ? fmt(row.score) : EMPTY}
+            </div>
+            <div className="date">{row?.date ?? EMPTY}</div>
+          </div>
+        );
+      })}
     </div>
   );
 }
 
-export default function HallClient() {
-  const user = useSession();
-  const [tab, setTab] = useState(GAMES[0].id);
-  const rows = useMemo(() => seededScores(tab.length * 23 + 7, 12), [tab]);
-  const game = GAMES.find((g) => g.id === tab) ?? GAMES[0];
-
-  const youRank = 8 + (tab.length % 4);
-  const youScore = rows[5].score - 2400;
-  const yellow = { color: "var(--yellow)" };
+export default function HallClient({ boards }: { boards: HallBoard[] }) {
+  const [tab, setTab] = useState(boards[0]?.id);
+  const board = boards.find((b) => b.id === tab) ?? boards[0];
+  const rows = board?.rows ?? [];
 
   return (
-    <div className="av-hall fade-in">
-      <div className="hall-head">
-        <h1>SALÓN DE LA FAMA</h1>
-        <p className="pixel" style={{ fontSize: 10 }}>
-          LOS NOMBRES QUE NUNCA SE BORRAN DE LA PANTALLA
-        </p>
-      </div>
-
+    <>
       <div className="hall-tabs">
-        {GAMES.map((g) => (
+        {boards.map((b) => (
           <button
-            key={g.id}
+            key={b.id}
             type="button"
-            className={"chip" + (tab === g.id ? " active" : "")}
-            onClick={() => setTab(g.id)}
+            className={"chip" + (b.id === board.id ? " active" : "")}
+            onClick={() => setTab(b.id)}
           >
-            {g.title}
+            {b.title}
           </button>
         ))}
       </div>
@@ -81,9 +80,12 @@ export default function HallClient() {
           <div>PUNTUACIÓN</div>
           <div>FECHA</div>
         </div>
+        {rows.length === 0 && (
+          <p className="scores-status">AÚN NO HAY PUNTUACIONES</p>
+        )}
         {rows.map((r, i) => (
           <div
-            key={`${tab}-${r.rank}`}
+            key={`${board.id}-${r.rank}`}
             className={
               "tr" + (i === 0 ? " top1" : i === 1 ? " top2" : i === 2 ? " top3" : "")
             }
@@ -95,32 +97,7 @@ export default function HallClient() {
             <div className="dt">{r.date}</div>
           </div>
         ))}
-        {user && (
-          <>
-            <div className="tr you-label">▸ TU MEJOR MARCA EN {game.title}</div>
-            <div
-              className="tr you"
-              style={{ animationDelay: `${rows.length * 50 + 50}ms` }}
-            >
-              <div className="rk" style={yellow}>#{pad(youRank)}</div>
-              <div className="pl" style={yellow}>{user.name}</div>
-              <div
-                className="sc"
-                style={{ ...yellow, textShadow: "0 0 6px rgba(245,255,0,0.5)" }}
-              >
-                {fmt(youScore)}
-              </div>
-              <div className="dt">11/05/2026</div>
-            </div>
-          </>
-        )}
       </div>
-
-      <div style={{ textAlign: "center", marginTop: 32 }}>
-        <Link href="/games" className="btn lg">
-          VOLVER A LA BIBLIOTECA
-        </Link>
-      </div>
-    </div>
+    </>
   );
 }

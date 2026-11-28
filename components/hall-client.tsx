@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getBestMark, type BestMark } from "@/lib/scores/queries";
+import { useSession } from "@/lib/session";
+import { createClient } from "@/lib/supabase/client";
 import type { ScoreRow } from "@/lib/types";
 
 const fmt = (n: number) => n.toLocaleString("es-ES");
 const pad = (n: number) => String(n).padStart(2, "0");
 
 const EMPTY = "---";
+const YELLOW = { color: "var(--yellow)" };
 
 // Orden en pantalla: plata, oro y bronce.
 const PODIUM = [
@@ -51,10 +55,38 @@ function Podium({ rows }: { rows: ScoreRow[] }) {
   );
 }
 
+// La sesión vive en el navegador, así que esta consulta se hace desde aquí.
+// `board` cambia cuando llegan datos nuevos del servidor y obliga a repetirla.
+function useBestMark(board: HallBoard | undefined): BestMark | null {
+  const name = useSession()?.name;
+  const [found, setFound] = useState<{
+    gameId: string;
+    name: string;
+    mark: BestMark | null;
+  } | null>(null);
+
+  useEffect(() => {
+    if (!board || !name) return;
+    let current = true;
+    getBestMark(createClient(), board.id, name).then((result) => {
+      // Si falla, la fila se oculta.
+      const mark = result.ok ? result.data : null;
+      if (current) setFound({ gameId: board.id, name, mark });
+    });
+    return () => {
+      current = false;
+    };
+  }, [board, name]);
+
+  // No mostrar la marca de otra pestaña o de otra sesión mientras llega la nueva.
+  return found && found.gameId === board?.id && found.name === name ? found.mark : null;
+}
+
 export default function HallClient({ boards }: { boards: HallBoard[] }) {
   const [tab, setTab] = useState(boards[0]?.id);
   const board = boards.find((b) => b.id === tab) ?? boards[0];
   const rows = board?.rows ?? [];
+  const best = useBestMark(board);
 
   return (
     <>
@@ -97,6 +129,25 @@ export default function HallClient({ boards }: { boards: HallBoard[] }) {
             <div className="dt">{r.date}</div>
           </div>
         ))}
+        {best && (
+          <>
+            <div className="tr you-label">▸ TU MEJOR MARCA EN {board.title}</div>
+            <div
+              className="tr you"
+              style={{ animationDelay: `${rows.length * 50 + 50}ms` }}
+            >
+              <div className="rk" style={YELLOW}>#{pad(best.rank)}</div>
+              <div className="pl" style={YELLOW}>{best.name}</div>
+              <div
+                className="sc"
+                style={{ ...YELLOW, textShadow: "0 0 6px rgba(245,255,0,0.5)" }}
+              >
+                {fmt(best.score)}
+              </div>
+              <div className="dt">{best.date}</div>
+            </div>
+          </>
+        )}
       </div>
     </>
   );

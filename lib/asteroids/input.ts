@@ -18,7 +18,8 @@ export type Keyboard = KeyboardState & {
 // Teclas con las que el navegador desplazaría la página.
 const SCROLL_KEYS = new Set(["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Space"]);
 
-const isTextField = (target: EventTarget | null) =>
+/** En los campos de texto las teclas se escriben: no controlan el juego. */
+export const isTextField = (target: EventTarget | null) =>
   target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement;
 
 /**

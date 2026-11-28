@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { GAMES, getGame, seededScores } from "@/lib/data";
 
-// Los 8 ids se prerenderizan; un id desconocido se resuelve en request y debe
+// Los ids del catálogo se prerenderizan; un id desconocido se resuelve en request y debe
 // responder 404 real, lo que exige leer `params` fuera de <Suspense>.
 export const instant = false;
 
@@ -38,7 +38,7 @@ export default async function GameDetailPage({
           <div className="detail-tags">
             <span>{game.cat}</span>
             <span>1 JUGADOR</span>
-            <span>TECLADO / TÁCTIL</span>
+            <span>{game.id === "asteroids" ? "TECLADO" : "TECLADO / TÁCTIL"}</span>
             <span>RETRO 1985</span>
           </div>
           <h2 className="neon-cyan">{game.title}</h2>

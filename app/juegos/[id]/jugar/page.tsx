@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import AsteroidsPlayer from "@/components/asteroids-player";
 import PlayerClient from "@/components/player-client";
 import { GAMES, getGame } from "@/lib/data";
 
@@ -24,6 +25,11 @@ export default async function PlayPage({
   const { id } = await params;
   const game = getGame(id);
   if (!game) notFound();
+
+  // Asteroids es el único juego real; el resto usa la demo.
+  if (game.id === "asteroids") {
+    return <AsteroidsPlayer gameId={game.id} title={game.title} />;
+  }
 
   return <PlayerClient gameId={game.id} title={game.title} />;
 }

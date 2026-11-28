@@ -521,6 +521,10 @@ a { color: inherit; text-decoration: none; }
   filter: drop-shadow(0 0 6px rgba(0,245,255,0.4));
 }
 
+/* Escena vectorial con las mismas formas y colores que dibuja el juego.
+   Lo importante queda centrado: las portadas recortan a 4:3, 16:10 y 1:1. */
+.cover-asteroids { background: #000 url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' fill='none' stroke='white' stroke-width='2.5' stroke-linejoin='round'><path d='M278 52 L312 66 L327 98 L309 112 L320 140 L283 152 L252 138 L231 108 L243 72 Z'/><path d='M296 196 L322 205 L327 229 L308 247 L284 240 L272 222 L281 204 Z'/><path d='M93 62 L108 68 L110 84 L97 95 L81 86 L82 70 Z'/><path d='M166 226 L200 238 L214 270 L194 304 L154 310 L130 284 L136 244 Z'/><g transform='translate(168 184) rotate(-34) scale(1.8)' stroke-width='1.4'><path d='M20 0 L-12 -9 L-7 0 L-12 9 Z'/><path d='M-8 -4 L-21 0 L-8 4' stroke='rgb(255,130,0)'/></g><g fill='white' stroke='none'><circle cx='207' cy='158' r='3.5'/><circle cx='229' cy='143' r='3.5'/></g><path d='M342 40 l9 -7 M350 62 l11 1 M214 58 l-8 -8' stroke-width='1.5' opacity='0.6'/><g stroke='cyan'><path d='M112 124 L132 144 L112 164 L92 144 Z'/><text x='112' y='145' fill='cyan' stroke='none' font-family='monospace' font-weight='bold' font-size='15' text-anchor='middle' dominant-baseline='central'>3x</text></g></svg>") center / cover no-repeat; }
+
 /* ===== detail screen ===== */
 .av-detail {
   display: grid;
@@ -676,6 +680,9 @@ a { color: inherit; text-decoration: none; }
   content: ""; width: 8px; height: 8px; border-radius: 50%;
   background: var(--green); box-shadow: 0 0 6px var(--green);
 }
+
+/* juego real: el canvas de 800×600 escala al tamaño de la pantalla */
+.game-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
 /* fake in-screen game */
 .game-arena {

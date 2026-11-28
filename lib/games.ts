@@ -89,4 +89,15 @@ export const GAMES: Game[] = [
     best: 24,
     plays: "4.2K",
   },
+  {
+    id: "asteroids",
+    title: "ASTEROIDS",
+    short: "Parte las rocas y sobrevive al campo de asteroides.",
+    long: "Tu nave deriva en un espacio sin bordes: lo que sale por un lado vuelve por el otro. Parte cada asteroide en fragmentos más pequeños, atrapa el triple disparo y aguanta nivel tras nivel con solo tres vidas.",
+    cat: "SHOOTER",
+    cover: "cover-asteroids",
+    color: "cyan",
+    best: 32500,
+    plays: "1.2K",
+  },
 ];

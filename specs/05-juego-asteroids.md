@@ -1,6 +1,6 @@
 # SPEC 05 — Juego Asteroids jugable en el reproductor
 
-> **Status:** approved
+> **Status:** implemented
 > **Depends on:** SPEC 01
 > **Date:** 2026-11-27
 > **Objective:** Añadir ASTEROIDS como noveno juego del catálogo y hacerlo jugable en `/juegos/asteroids/jugar`, portando `references/started-games/02-asteroids/game.js` a un motor TypeScript integrado con el HUD y el modal de React.

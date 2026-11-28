@@ -8,12 +8,17 @@ import Hud from "@/components/player-hud";
 import { START_LIVES } from "@/lib/asteroids/constants";
 import { isTextField } from "@/lib/asteroids/input";
 import type { AsteroidsGame, AsteroidsSnapshot } from "@/lib/asteroids/types";
+import { saveScore } from "@/lib/scores/queries";
+import { canSaveScore } from "@/lib/scores/rules";
 import { useSession } from "@/lib/session";
+import { createClient } from "@/lib/supabase/client";
 
 // Lo que muestra el HUD hasta que el motor envía sus datos.
 const INITIAL_SNAPSHOT: AsteroidsSnapshot = { score: 0, lives: START_LIVES, level: 1 };
 
 type Props = { gameId: string; title: string };
+
+type SaveState = "idle" | "saving" | "saved" | "error";
 
 const TOUCH_QUERY = "(hover: none) and (pointer: coarse)";
 
@@ -46,7 +51,9 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
   const [paused, setPaused] = useState(false);
   const [finalScore, setFinalScore] = useState<number | null>(null);
   const [nameEdit, setNameEdit] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
+  const [saveState, setSaveState] = useState<SaveState>("idle");
+  const matchRef = useRef(0); // identifica la partida a la que pertenece un guardado
+  const savingRef = useRef(false); // bloquea un segundo envío antes de que React repinte
 
   const name = nameEdit ?? user?.name ?? "INVITADO";
   const over = finalScore !== null;
@@ -95,14 +102,29 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
 
   // Al volver a la ruta React conserva el estado: hay que limpiarlo.
   const resetMatchState = () => {
+    matchRef.current += 1;
+    savingRef.current = false;
     setPaused(false);
     setFinalScore(null);
-    setSaved(false);
+    setSaveState("idle");
   };
 
   const restart = () => {
     gameRef.current?.restart();
     resetMatchState();
+  };
+
+  const save = async (score: number) => {
+    if (savingRef.current || saveState === "saved") return;
+    if (!canSaveScore(name, score)) return;
+    const supabase = createClient();
+    const match = matchRef.current;
+    savingRef.current = true;
+    setSaveState("saving");
+    const result = await saveScore(supabase, { gameId, name, score });
+    if (match !== matchRef.current) return; // ya empezó otra partida
+    savingRef.current = false;
+    setSaveState(result.ok ? "saved" : "error");
   };
 
   return (
@@ -139,9 +161,12 @@ export default function AsteroidsPlayer({ gameId, title }: Props) {
         <GameOverModal
           score={finalScore}
           name={name}
-          saved={saved}
+          saved={saveState === "saved"}
+          saving={saveState === "saving"}
+          error={saveState === "error"}
+          canSave={canSaveScore(name, finalScore)}
           onName={setNameEdit}
-          onSave={() => setSaved(true)} // sin persistencia: solo muestra el aviso
+          onSave={() => save(finalScore)}
           onRestart={restart}
         />
       )}

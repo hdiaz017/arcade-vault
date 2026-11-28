@@ -681,6 +681,9 @@ a { color: inherit; text-decoration: none; }
   background: var(--green); box-shadow: 0 0 6px var(--green);
 }
 
+/* juego real: el canvas de 800×600 escala al tamaño de la pantalla */
+.game-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
 /* fake in-screen game */
 .game-arena {
   position: absolute; inset: 0;
